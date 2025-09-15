@@ -7,47 +7,59 @@ document.addEventListener('DOMContentLoaded', () => {
     const updateBtn = document.getElementById('update-grid-btn');
     const allOnBtn = document.getElementById('all-on-btn');
     const allOffBtn = document.getElementById('all-off-btn');
+    // --- NEW elements for ASCII translation ---
+    const translateBtn = document.getElementById('translate-btn');
+    const asciiResultEl = document.getElementById('ascii-result');
+    const remainingBitsEl = document.getElementById('remaining-bits');
 
-    /**
-     * Clears the grid and generates a new set of bulbs based on row and column count.
-     * @param {number} rows - The number of rows for the grid.
-     * @param {number} cols - The number of columns for the grid.
-     */
     function generateGrid(rows, cols) {
-        // 1. Clear any existing bulbs from the grid
         bulbGrid.innerHTML = '';
-        
-        // 2. Update the grid layout dynamically using CSS grid properties
         bulbGrid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-
-        // 3. Calculate the total number of bulbs
         const totalBulbs = rows * cols;
-        if (totalBulbs > 500) { // Safety limit
+        if (totalBulbs > 500) {
              alert("基於效能考量，無法建立超過 500 個燈泡。");
              return;
         }
-        
-        // 4. Create and append each new bulb
         for (let i = 1; i <= totalBulbs; i++) {
             const bulb = document.createElement('div');
             bulb.classList.add('bulb');
-            
             const bulbContent = document.createElement('div');
             bulbContent.classList.add('bulb-content');
             bulbContent.textContent = i;
-            
             bulb.appendChild(bulbContent);
             bulbGrid.appendChild(bulb);
         }
     }
 
-    // --- EVENT LISTENERS ---
+    // --- NEW: Function to translate binary to ASCII ---
+    function translateToAscii() {
+        const allBulbs = document.querySelectorAll('.bulb');
+        let binaryString = '';
+        allBulbs.forEach(bulb => {
+            binaryString += bulb.classList.contains('on') ? '1' : '0';
+        });
 
-    // Generate the grid when the "Update Grid" button is clicked
+        let asciiResult = '';
+        let remainingBits = '';
+
+        for (let i = 0; i < binaryString.length; i += 8) {
+            if (i + 8 <= binaryString.length) {
+                const byte = binaryString.substring(i, i + 8);
+                const decimalValue = parseInt(byte, 2);
+                asciiResult += String.fromCharCode(decimalValue);
+            } else {
+                remainingBits = binaryString.substring(i);
+            }
+        }
+        
+        asciiResultEl.textContent = asciiResult || '（無有效輸出）';
+        remainingBitsEl.textContent = remainingBits || '無';
+    }
+
+    // --- EVENT LISTENERS ---
     updateBtn.addEventListener('click', () => {
         const rows = parseInt(rowsInput.value, 10);
         const cols = parseInt(colsInput.value, 10);
-        
         if (rows > 0 && cols > 0) {
             generateGrid(rows, cols);
         } else {
@@ -55,7 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Toggle a single bulb on/off
     bulbGrid.addEventListener('click', (event) => {
         const clickedElement = event.target.closest('.bulb');
         if (clickedElement) {
@@ -63,20 +74,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Turn all bulbs on
     allOnBtn.addEventListener('click', () => {
-        const allBulbs = document.querySelectorAll('.bulb');
-        allBulbs.forEach(bulb => bulb.classList.add('on'));
+        document.querySelectorAll('.bulb').forEach(bulb => bulb.classList.add('on'));
     });
 
-    // Turn all bulbs off
     allOffBtn.addEventListener('click', () => {
-        const allBulbs = document.querySelectorAll('.bulb');
-        allBulbs.forEach(bulb => bulb.classList.remove('on'));
+        document.querySelectorAll('.bulb').forEach(bulb => bulb.classList.remove('on'));
     });
     
+    // --- NEW: Event listener for the translate button ---
+    translateBtn.addEventListener('click', translateToAscii);
+    
     // --- INITIALIZATION ---
-    // Generate the initial grid on page load using the default values in the HTML
     generateGrid(parseInt(rowsInput.value, 10), parseInt(colsInput.value, 10));
-
 });

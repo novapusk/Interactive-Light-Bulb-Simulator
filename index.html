@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>燈泡模擬器</title>
+    <title>自訂燈泡模擬器</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div id="app-container">
-        <h1>💡 燈泡模擬器 💡</h1>
+        <h1>💡 自訂燈泡模擬器 💡</h1>
         <p>請設定行數和列數，然後點擊「更新網格」。</p>
 
         <div class="customization-controls">
@@ -31,9 +31,21 @@
 
         <div id="light-bulb-grid">
             </div>
-    </div>
 
-    <footer>by WCH with Gemini</footer>
+        <div id="ascii-converter">
+            <button id="translate-btn">轉換為 ASCII</button>
+            <div id="ascii-output-container">
+                <h4>ASCII 輸出：</h4>
+                <pre id="ascii-result">請設定燈泡狀態後點擊轉換按鈕。</pre>
+                <div id="remaining-bits-container">
+                    <span>剩餘位元：</span>
+                    <code id="remaining-bits"></code>
+                </div>
+            </div>
+        </div>
+        </div>
+
+    <footer>WCH</footer>
 
     <script src="script.js"></script>
 </body>
