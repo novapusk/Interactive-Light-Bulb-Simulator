@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>燈泡模擬器</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="app-container">
+        <h1>💡 燈泡模擬器 💡</h1>
+        <p>請設定行數和列數，然後點擊「更新網格」。</p>
+
+        <div class="customization-controls">
+            <div class="input-group">
+                <label for="rows-input">行數：</label>
+                <input type="number" id="rows-input" value="4" min="1" max="20">
+            </div>
+            <div class="input-group">
+                <label for="cols-input">列數：</label>
+                <input type="number" id="cols-input" value="8" min="1" max="25">
+            </div>
+            <button id="update-grid-btn">更新網格</button>
+        </div>
+
+        <div class="controls">
+            <button id="all-on-btn">全部開啟</button>
+            <button id="all-off-btn">全部關閉</button>
+        </div>
+
+        <div id="light-bulb-grid">
+            </div>
+    </div>
+
+    <footer>by WCH with Gemini</footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
